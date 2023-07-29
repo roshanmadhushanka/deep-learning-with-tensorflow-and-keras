@@ -1,6 +1,6 @@
 import tensorflow as tf
 import numpy as np
-import matplotlib
+import os
 import matplotlib.pyplot as plt
 import pandas as pd
 import keras as k
@@ -25,3 +25,12 @@ if __name__ == '__main__':
     model.summary()
 
     model.compile(loss='mean_squared_error', optimizer='sgd')
+    model.fit(x=data['area'], y=data['price'], epochs=100, batch_size=32, verbose=1, validation_split=0.2)
+
+    y_pred = model.predict(x=data['area'])
+    plt.plot(data['area'], y_pred, color='red', label='Predicted Price')
+    plt.scatter(data['area'], data['price'], label='Training Data')
+    plt.xlabel('Area')
+    plt.ylabel('Price')
+    plt.legend()
+    plt.savefig(os.path.join('data', 'house_price_prediction.png'))
